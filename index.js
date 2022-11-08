@@ -17,8 +17,21 @@ async function run() {
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = serviceCollection.find(query)
+                .sort({
+                    _id: -1,
+                })
             const service = await cursor.toArray()
             res.send(service)
+        })
+        app.get('/home', async (req, res) => {
+            const query = {}
+            const cursor = serviceCollection.find(query)
+                .sort({
+                    _id: -1,
+                })
+                .limit(3);
+            const limitservice = await cursor.toArray()
+            res.send(limitservice)
         })
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
