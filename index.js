@@ -39,19 +39,30 @@ async function run() {
             const query = { _id: ObjectId(id) }
             const user = await serviceCollection.findOne(query);
             res.send(user)
-    })
+        })
 
-        app.post("/AddServices",async(req,res)=>{
-          const service=req.body;
-          const result=await serviceCollection.insertOne(service);
-          res.send(result)
+        app.post("/AddServices", async (req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result)
         })
-      
-        app.post("/AddReview",async(req,res)=>{
-          const review=req.body;
-          const result=await reviewcollection.insertOne(review);
-          res.send(result)
+
+        app.post("/AddReview", async (req, res) => {
+            const review = req.body;
+            const result = await reviewcollection.insertOne(review);
+            res.send(result)
         })
+        app.get("/reviews", async (req, res) => {
+            let query = {};
+            if (req.query.id) {
+                query = { ServiceId: req.query.id };
+            }
+            const cursor = reviewcollection.find(query).sort({
+                Time: -1,
+            });
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
 
         // app.get('/users/:id', async (req, res) => {
         //     const id = req.params.id;
