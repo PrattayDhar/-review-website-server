@@ -63,6 +63,26 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         });
+        app.get("/myreviews", async (req, res) => {
+            let query = {};
+            if (req.query.name) {
+                query = {UserName: req.query.name };
+            }
+            const cursor = reviewcollection.find(query).sort({
+                Time: -1,
+            });
+            const myreviews = await cursor.toArray();
+            res.send(myreviews);
+        });
+        app.delete('/myreviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            // console.log('Delete', id);
+            const result = await reviewcollection.deleteOne(query)
+            console.log(result);
+            res.send(result)
+        })
+
 
         // app.get('/users/:id', async (req, res) => {
         //     const id = req.params.id;
