@@ -82,6 +82,19 @@ async function run() {
             console.log(result);
             res.send(result)
         })
+        app.patch('/myreviewsupdate/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const UpdateReview = req.body.UpdateReview;        
+            const reviewupdate = {
+                $set: {
+                    UserReview:UpdateReview,
+                },
+            }
+            const result = await reviewcollection.updateOne(filter,reviewupdate)
+            res.send(result)
+          
+        })
 
 
         // app.get('/users/:id', async (req, res) => {
@@ -94,21 +107,7 @@ async function run() {
 
 
 
-        // app.put('/users/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: ObjectId(id) }
-        //     const updateuser = req.body;
-        //     const option = { upsert: true }
-        //     const userupdate = {
-        //         $set: {
-        //             name: updateuser.name,
-        //             email: updateuser.email
-        //         }
-        //     }
-        //     const result = await userCollection.updateOne(filter, userupdate, option)
-        //     res.send(result)
-        //     console.log(updateuser);
-        // })
+        // 
 
         // app.delete('/users/:id', async (req, res) => {
         //     const id = req.params.id;
