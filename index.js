@@ -66,7 +66,7 @@ async function run() {
         app.get("/myreviews", async (req, res) => {
             let query = {};
             if (req.query.name) {
-                query = {UserName: req.query.name };
+                query = { UserName: req.query.name };
             }
             const cursor = reviewcollection.find(query).sort({
                 Time: -1,
@@ -84,39 +84,19 @@ async function run() {
         })
         app.patch('/myreviewsupdate/:id', async (req, res) => {
             const id = req.params.id;
+            console.log(id);
             const filter = { _id: ObjectId(id) }
-            const UpdateReview = req.body.UpdateReview;        
+            const up = req.body.up;    
+            console.log(up);    
             const reviewupdate = {
                 $set: {
-                    UserReview:UpdateReview,
+                    UserReview: up,
                 },
             }
             const result = await reviewcollection.updateOne(filter,reviewupdate)
             res.send(result)
-          
+
         })
-
-
-        // app.get('/users/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) }
-        //     const user = await userCollection.findOne(query);
-        //     res.send(user)
-
-        // })
-
-
-
-        // 
-
-        // app.delete('/users/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) }
-        //     // console.log('Delete', id);
-        //     const result = await userCollection.deleteOne(query)
-        //     console.log(result);
-        //     res.send(result)
-        // })
 
     } finally {
     }
