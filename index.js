@@ -4,11 +4,14 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
 
+
 // middeileware
 app.use(cors());
+var jwt = require('jsonwebtoken');
 app.use(express.json())
+require("dotenv").config();
 
-const uri = "mongodb+srv://surveyhelper:oJnGnqUvuRXzZaQ3@cluster0.omw9qhg.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.omw9qhg.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
@@ -86,14 +89,14 @@ async function run() {
             const id = req.params.id;
             console.log(id);
             const filter = { _id: ObjectId(id) }
-            const up = req.body.up;    
-            console.log(up);    
+            const up = req.body.up;
+            console.log(up);
             const reviewupdate = {
                 $set: {
                     UserReview: up,
                 },
             }
-            const result = await reviewcollection.updateOne(filter,reviewupdate)
+            const result = await reviewcollection.updateOne(filter, reviewupdate)
             res.send(result)
 
         })
